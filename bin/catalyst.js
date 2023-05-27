@@ -25,7 +25,12 @@ const helpersDir = path.join(srcDir, 'helpers')
 // creates the components, pages and helpers folders
 // creates the index.js file
 
-const init = ({ useRealm }) => {
+const init = ({ useRealm, useAuth }) => {
+  if (useAuth && !useRealm) {
+    console.log(chalk.red('You must use realm to use auth'))
+    return
+  }
+  
   console.log(chalk.blue('Initializing a new catalyst project...'))
 
   // create the react app
@@ -57,10 +62,13 @@ const init = ({ useRealm }) => {
   // create the index.js file
   fs.writeFileSync(path.join(srcDir, 'index.js'), `
   import { init } from 'catalyst'
+
+  import theme from './theme.json'
   
   init({
-    useRealm: ${useRealm},
-    // add your props here
+    ${useRealm ? 'useRealm: true, ' : ''}
+    ${useAuth ? 'auth: {}, ' : ''}
+    theme,
     pages: {
       // add your pages here
     },

@@ -28,7 +28,6 @@ export default function ControlledDialog ({ children, ...props }) {
       {title ? <DialogTitle>{title}</DialogTitle> : ''}
       <DialogContent dividers>{content}</DialogContent>
       <DialogActions>{actions.map(({ text, onClick, ...props }, index) => <Button key={index} onClick={() => handleAction(onClick)} {...props}>{text}</Button>)}</DialogActions>
-      {}
     </Dialog>
   </>
 }
