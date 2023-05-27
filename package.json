@@ -16,7 +16,9 @@
     "map-obj": "^5.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-dotenv": "^0.1.3"
+    "react-dotenv": "^0.1.3",
+    "react-router": "^6.11.2",
+    "react-router-dom": "^6.11.2"
   },
   "bin": {
     "catalyst": "./bin/catalyst.js"

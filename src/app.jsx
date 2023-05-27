@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ThemeProvider from './helpers/theme'
 import LoadingContext from './helpers/loading'
 import RealmContext from './helpers/realm'
-import AuthContext from './helpers/auth'
+import AuthPage from './realm/auth'
 
 export default function App({ useRealm, auth, theme, pages, contexts }) {
   let Component = () => <Router>
     <Routes>
+      {auth ? <Route path="/auth/*" element={<AuthPage {...auth}/>} /> : null}
       {Object.entries(pages).map(([path, Component]) => <Route key={path} path={path} element={<Component/>} />)}
     </Routes>
   </Router>
@@ -21,10 +22,6 @@ export default function App({ useRealm, auth, theme, pages, contexts }) {
   if (theme) Component = () => <ThemeProvider theme={theme}>
     <Component/>
   </ThemeProvider>
-
-  if (auth) Component = () => <AuthContext.Provider {...auth}>
-    <Component/>
-  </AuthContext.Provider>
 
   if (useRealm) Component = () => <RealmContext.Provider>
     <Component/>
