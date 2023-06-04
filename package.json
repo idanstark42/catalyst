@@ -1,8 +1,7 @@
 {
-  "name": "catalyst",
+  "name": "@idanstark42/catalyst",
   "version": "0.1.0",
   "entry": "./src/index.js",
-  "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
