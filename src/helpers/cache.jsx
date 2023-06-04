@@ -1,6 +1,8 @@
-export const useMemoryCache = (load, keyEncoding) => new MemoryCache(load, keyEncoding)
+export default function useMemoryCache (load, keyEncoding) {
+  return new MemoryCache(load, keyEncoding)
+}
 
-export class MemoryCache {
+class MemoryCache {
   constructor (load, keyEncoding=x=>x) {
     Object.assign(this, { load, keyEncoding, store: {} })
   }

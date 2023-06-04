@@ -1,16 +1,11 @@
-/* This script has a few subcommands:
- * - init: initialize a new catalyst project
- * - create: create a new component, page, context or helper
- */
+#!/usr/bin/env node
 
-const caporal = require('caporal')
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const { execSync } = require('child_process')
 const { prompt } = require('inquirer')
-const { getDirectories, getFiles } = require('./utils')
-const { get } = require('http')
+const { getFiles } = require('./utils.js')
 
 const cwd = process.cwd()
 const srcDir = path.join(cwd, 'src')
@@ -153,10 +148,21 @@ caporal
   .argument('<type>', 'The type of file to create')
   .argument('[name]', 'The name of the file to create')
   .action(create)
-  .parse(process.argv)
-  .catch(err => {
-    console.log(chalk.red(err.message))
+  .command('start', 'Start the development server')
+  .action(() => {
+    execSync('npx react-scripts start', { stdio: 'inherit' })
   })
-  .finally(() => {
-    process.exit(0)
+  .command('build', 'Build the project for production')
+  .action(() => {
+    execSync('npx react-scripts build', { stdio: 'inherit' })
   })
+  .command('test', 'Run the tests')
+  .action(() => {
+    execSync('npx react-scripts test', { stdio: 'inherit' })
+  })
+  .command('eject', 'Eject the project from catalyst')
+  .action(() => {
+    execSync('npx react-scripts eject', { stdio: 'inherit' })
+  })
+
+caporal.parse(process.argv)
