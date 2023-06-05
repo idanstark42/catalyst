@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
 import App from './app'
 
 export { default as Input } from './components/input'
@@ -15,7 +14,7 @@ export { default as RealmContext } from './helpers/realm'
 export { default as RealmModel } from './realm/model'
 export { default as RealmUser } from './realm/user'
 
-export function init (props) {
+export function init (props={}) {
   ReactDOM.createRoot(document.getElementById('root')).render(<React.StrictMode>
     <App {...props} />
   </React.StrictMode>)
