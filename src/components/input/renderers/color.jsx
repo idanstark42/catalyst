@@ -1,3 +1,4 @@
+import React from 'react'
 import { withJsonFormsControlProps } from '@jsonforms/react'
 import { rankWith, and, or, uiTypeIs, schemaTypeIs, formatIs, optionIs } from '@jsonforms/core'
 import { MuiColorInput } from 'mui-color-input'

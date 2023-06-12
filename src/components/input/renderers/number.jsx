@@ -1,3 +1,4 @@
+import React from 'react'
 import { withJsonFormsControlProps } from '@jsonforms/react'
 import { rankWith, isNumberControl, and, not, optionIs } from '@jsonforms/core'
 import Stack from '@mui/material/Stack'

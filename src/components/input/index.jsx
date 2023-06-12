@@ -39,7 +39,7 @@
  *   q. phone: country
  */
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { JsonForms } from '@jsonforms/react'
 import { materialCells, materialRenderers } from '@jsonforms/material-renderers'
 import equal from 'fast-deep-equal/react'

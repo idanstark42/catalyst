@@ -1,3 +1,4 @@
+import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import ThemeProvider from './helpers/theme'
@@ -5,7 +6,7 @@ import LoadingContext from './helpers/loading'
 import RealmContext from './helpers/realm'
 import AuthPage from './realm/auth'
 
-export default function App({ useRealm, auth, theme, pages, contexts }) {
+export default function App({ useRealm, auth, theme, pages = {}, contexts = [] }) {
   let Component = () => <Router>
     <Routes>
       {auth ? <Route path="/auth/*" element={<AuthPage {...auth}/>} /> : null}
