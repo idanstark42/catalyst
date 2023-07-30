@@ -17,7 +17,6 @@ export default class User {
     return this.profile.name || this.profile.email.split('@')[0]
   }
 
-
   async logOut () {
     return await this.raw.logOut()
   }
