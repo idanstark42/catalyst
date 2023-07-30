@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './app'
 
 export { default as Input } from './components/input'
+export { default as Form } from './components/input/form'
 export { default as Dialog } from './components/dialog'
 export { default as Popup } from './components/popup'
 
