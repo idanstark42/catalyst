@@ -63,7 +63,7 @@ class ObjectAdapter extends Adapter {
   }
 
   static create ({ type, scope, layout, name, onChange, ...options }) {
-    const adapters = mapObject(type, (field, subtype) => [field, generateAdapter(subtype, childScope(scope, field), Layout.flip(layout), field, onChange, options)])
+    const adapters = mapObject(type, (field, subtype) => [field, Adapter.create(subtype, childScope(scope, field), Layout.flip(layout), field, onChange, options)])
     const defaultData = mapObject(adapters, (field, adapter) => [field, adapter.defaultData])
     return new ObjectAdapter(adapters, defaultData, { type, scope, layout, name, onChange, ...options })
   }
@@ -89,7 +89,7 @@ class ArrayAdapter extends Adapter {
 
   static create ({ type, scope, layout, name, onChange, ...options }) {
     const itemType = type.replace(/^array /, '')
-    const itemsAdapter = generateAdapter({ type: itemType, scope, layout: Layout.flip(layout), name, onChange, ...options })
+    const itemsAdapter = Adapter.create({ type: itemType, scope, layout: Layout.flip(layout), name, onChange, ...options })
     return new ArrayAdapter(itemsAdapter, { type, scope, layout, name, onChange, ...options })
   } 
 }
