@@ -3,7 +3,7 @@ import AJV from 'ajv'
 import addFormats from 'ajv-formats'
 
 export const useErrors = (adapter, rootScope) => {
-  return ({ data, errors }) => errors.filter(error => error.data !== '').concat(adapter.validate(data, rootScope, data))
+  return ({ data, errors }) => errors.filter(error => error.data !== '').concat(adapter.validate(data, rootScope))
 }
 
 export const ajv = new AJV({

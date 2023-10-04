@@ -17,12 +17,12 @@ const STYLES = {
 }
 
 const renderer = withJsonFormsControlProps(function NumberControl ({ data, handleChange, path, ...options }) {
-  const { maximum, minimum } = options.schema
+  const { minimum, maximum } = options.schema
 
-  const validate = value => {
+  const valueInRange = value => {
     value = Number(value)
     if (minimum)  value = Math.max(value, minimum)
-    if (maximum)  value = Math.min(value, minimum)
+    if (maximum)  value = Math.min(value, maximum)
     return value
   }
 
@@ -30,7 +30,7 @@ const renderer = withJsonFormsControlProps(function NumberControl ({ data, handl
     <Typography variant='button' sx={{ flexGrow: 1 }}>{path} :</Typography>
     <Stack className='number-control' direction='row' width='7rem' alignItems='center' sx={STYLES}>
       <IconButton disabled={data === minimum} onClick={() => handleChange(path, data - 1)}><RemoveCircleIcon fontSize='small'/></IconButton>
-      <Input value={data} onChange={event => handleChange(path, validate(event.target.value))} />
+      <Input value={data === undefined ? 0 : data} onChange={event => handleChange(path, valueInRange(event.target.value))} />
       <IconButton disabled={data === maximum} onClick={() => handleChange(path, data + 1)}><AddCircleIcon fontSize='small'/></IconButton>
     </Stack>
   </Stack>

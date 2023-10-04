@@ -53,7 +53,7 @@ import ColorInput from './renderers/color'
 
 const renderers = [...materialRenderers, NumberInput, ColorInput]
 
-export default function Input ({ value='', type='text', name=undefined, onChange=()=>{}, layout=Layout.VERTICAL, ...options }) {
+export default function Input ({ value, type='text', name=undefined, onChange=()=>{}, layout=Layout.VERTICAL, ...options }) {
   const adapter = Adapter.create({ type, scope: ROOT_SCOPE, layout, name, onChange, ...options })
   const [formState, setFormState] = useState({ errors: [], data: undefined })
   const getErrors = useErrors(adapter, ROOT_SCOPE)

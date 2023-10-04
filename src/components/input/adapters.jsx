@@ -13,11 +13,17 @@ export default class Adapter {
   onChange ({ data, errors }) {
     return this.onChange(data, errors)
   }
+
+  value (value) {
+    return value === undefined ? this.defaultData : value
+  }
 }
 
 class BasicAdapter extends Adapter {
   constructor (adapter, { type, scope, layout, name, onChange, ...options }) {
     super()
+    this.ui = options.ui || {}
+    delete options.ui
     Object.assign(this, { adapter, type, scope, layout, name, onChange, options })
   }
 
@@ -26,12 +32,18 @@ class BasicAdapter extends Adapter {
   }
 
   get uiSchema () {
-    return { type: 'Control', options: { ...(this.adapter.ui || {}), hideRequiredAsterisk: true }, scope: this.scope, label: this.name }
+    return { type: 'Control', options: { ...(this.adapter.ui || {}), hideRequiredAsterisk: true, ...this.ui }, scope: this.scope, label: this.name }
   }
 
   get defaultData () {
-    return this.adapter.defaultData || ''
+    if (this.options.defaultData !== undefined) return this.options.defaultData
+    if (this.adapter.defaultData !== undefined) return this.adapter.defaultData
+    return undefined
   }
+
+  validate (value) {
+    return this.adapter.validate instanceof Function ? this.adapter.validate(value) : []
+  } 
 
   static create ({ type, scope, layout, name = 'value', onChange, ...options }) {
     if (scope === ROOT_SCOPE) return BasicAdapter.createBasicRootAdapter({ type, scope, layout, name, onChange, ...options })
@@ -59,11 +71,17 @@ class ObjectAdapter extends Adapter {
   }
 
   get uiSchema () {
-    return { type: 'Group', elements: Object.entries(this.adapters).map(([field, adapter]) => adapter.uiSchema), scope: this.scope, label: this.name }
+    return { type: 'Group', elements: Object.entries(this.adapters).map(([_field, adapter]) => adapter.uiSchema), scope: this.scope, label: this.name }
+  }
+
+  validate (value) {
+    return Object.entries(this.adapters).flatMap(([field, adapter]) => adapter.validate(value[field]))
   }
 
   static create ({ type, scope, layout, name, onChange, ...options }) {
-    const adapters = mapObject(type, (field, subtype) => [field, Adapter.create(subtype, childScope(scope, field), Layout.flip(layout), field, onChange, options)])
+    const fieldOptions = mapObject(type, field => [field, options[field] || {}])
+    Object.keys(type).forEach(field => delete options[field])
+    const adapters = mapObject(type, (field, subtype) => [field, Adapter.create({ type: subtype, scope: childScope(scope, field), layout: Layout.flip(layout), field, onChange, ...fieldOptions[field], ...options })])
     const defaultData = mapObject(adapters, (field, adapter) => [field, adapter.defaultData])
     return new ObjectAdapter(adapters, defaultData, { type, scope, layout, name, onChange, ...options })
   }
@@ -72,7 +90,7 @@ class ObjectAdapter extends Adapter {
 class ArrayAdapter extends Adapter {
   constructor (itemsAdapter, { type, scope, layout, name, onChange, ...options }) {
     super()
-    Object.assign(this, { itemsAdapter, type, scope, layout, name, onChange, options })
+    Object.assign(this, { itemsAdapter, type, scope, layout, name, onChange, options, defaultData: [] })
   }
 
   get schema () {
@@ -83,8 +101,8 @@ class ArrayAdapter extends Adapter {
     return { type: 'ListWithDetail', options: { ...(this.itemsAdapter.ui || {}), hideRequiredAsterisk: true }, scope: this.scope, label: this.name }
   }
 
-  get defaultData () {
-    return []
+  validate (value) {
+    return value.flatMap(item => this.itemsAdapter.validate(item))
   }
 
   static create ({ type, scope, layout, name, onChange, ...options }) {
