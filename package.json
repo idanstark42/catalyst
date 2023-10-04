@@ -1,6 +1,6 @@
 {
   "name": "@idanstark42/catalyst",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A library for rapidly creating React MUI Apps quickly",
   "main": "./dist/bundle.js",
   "repository": "git@github.com:idanstark42/catalyst.git",
