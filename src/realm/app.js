@@ -15,11 +15,14 @@ export default class AuthApp {
     this.realm = new Realm.App(REALM_APP_ID)
     this.ObjectId = Realm.BSON.ObjectID
     this._clients = []
-    this.providers = AuthApp.PROVIDERS
   }
 
   get user () {
     return this.realm.currentUser ? new User(this.realm.currentUser, this) : undefined
+  }
+
+  get loggedIn () {
+    return Boolean(this.user)
   }
 
   get mongo () {
@@ -29,6 +32,7 @@ export default class AuthApp {
   }
 
   async login (data) {
+    console.log('login')
     if (data.constructor === String) {
       await this.logInWithProvider(data)
     } else {
@@ -38,6 +42,7 @@ export default class AuthApp {
   }
 
   async logInWithUsernameAndPassword ({ email, password }) {
+    console.log('logging in with username and password')
     return await this.realm.logIn(Realm.Credentials.emailPassword(email, password))
   }
 
@@ -75,5 +80,3 @@ export default class AuthApp {
     return new AuthApp()
   }
 }
-
-AuthApp.PROVIDERS = { FACEBOOK: 'facebook', GOOGLE: 'google' }

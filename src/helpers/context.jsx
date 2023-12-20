@@ -1,10 +1,11 @@
+import mapObject from 'map-obj'
 import React, { useState, useEffect, createContext, useContext } from 'react'
 
 export default class Context {
   
   #listeners = []
   
-  constructor (load = {}) {
+  constructor (load = {}, functions = {}) {
     this.raw = createContext({})
     this.load = load
     this.Provider = ({ children }) => {
@@ -18,6 +19,7 @@ export default class Context {
           setInit(true)
         } else {
           this.load().then(loadValue => {
+            console.log(loadValue)
             setValue(loadValue)
             setInit(true)
           })
@@ -33,7 +35,9 @@ export default class Context {
         setValue(original => ({ ...original, [key]: value }))
       }
 
-      return <Provider value={{ ...value, set, setValue }}>
+      const methods = mapObject(functions, (name, func) => [name, async (...args) => await func(...args, value, setValue)])
+
+      return <Provider value={{ ...value, set, ...methods }}>
         {children}
       </Provider>
     }

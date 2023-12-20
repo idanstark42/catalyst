@@ -10,7 +10,9 @@ export default function App({ useRealm, auth, theme, pages = {}, contexts = [] }
   let Component = <Router>
     <Routes>
       {auth ? <Route path="/auth/*" element={<AuthPage {...auth}/>} /> : null}
-      {Object.entries(pages).map(([path, Component]) => <Route key={path} path={path} element={<Component/>} />)}
+      {Object.entries(pages).map(([path, Component]) => {  
+        return <Route key={path} path={path} element={<Component />} />
+      })}
     </Routes>
   </Router>
 

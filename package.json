@@ -42,6 +42,7 @@
     "react-dotenv": "^0.1.3",
     "react-router": "^6.11.2",
     "react-router-dom": "^6.11.2",
+    "react-social-login-buttons": "^3.9.1",
     "realm-web": "^2.0.0"
   },
   "bin": "./bin/catalyst.js",

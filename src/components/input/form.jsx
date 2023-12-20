@@ -8,8 +8,8 @@ export default function Form ({ id, title, type, submit, submitClass='', submitT
   const [value, setValue] = useState()
 
   return <form id={id}>
-    <div className='title'>{title}</div>
+    <div className='title' sx={{ ...options.titleStyle }}>{title}</div>
     <Input value={value} type={type} onChange={({ data }) => setValue(data)} {...options} />
-    <Button className={submitClass} variant='contained' onClick={() => submit(value)}>{submitText || title}</Button>
+    <Button className={submitClass} variant='contained' onClick={() => submit(value)} sx={{ ...options.submitStyle }}>{submitText || title}</Button>
   </form>
 }
